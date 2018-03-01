@@ -7,7 +7,7 @@ Adafruit_NeoPixel eyeStick = Adafruit_NeoPixel(3, NEO_EYES, NEO_GRB + NEO_KHZ800
 #define NEO_POWER 3 // for cyclotron
 Adafruit_NeoPixel powerStick = Adafruit_NeoPixel(16, NEO_POWER, NEO_GRB + NEO_KHZ800);
 
-void setup() { 
+void setup() {
   // configure neopixels
   eyeStick.begin();
   eyeStick.setBrightness(80);
@@ -18,9 +18,10 @@ void setup() {
   powerStick.show(); // Initialize all pixels to 'off'
 }
 
-unsigned long bright_interval = 100;
+unsigned long bright_interval = 75;
 unsigned long prevBrightMillis = 0;
-int bright_led = 3;
+int bright_led = 4;
+int trailing_led = 4;
 bool reverse = true;
 
 unsigned long swap_interval = 60000;
@@ -42,7 +43,7 @@ void loop() {
 
   /* CHANGE HOLO LIGHT EVERY X SECONDS */
   if ((unsigned long)(currentMillis - prevSwapMillis) >= swap_interval)
-  {    
+  {
     switch ( swap_level )
     {
       case 1: // set all leds to white
@@ -72,7 +73,7 @@ void loop() {
   /* END HOLO LIGHT */
 
   /* POWERCELL ANIMATION */
-  for (int i = 3; i < 16; i++)
+  for (int i = 4; i < 16; i++)
   {
     powerStick.setPixelColor(i, powerStick.Color(15, 0, 0));
   }
@@ -81,58 +82,43 @@ void loop() {
   {
     if ( reverse == false )
     {
+      trailing_led = bright_led;
       bright_led++;
-      if( bright_led > 12 ){
-        switch ( bright_led )
-        {
-          case 13: 
-            bright_interval = 125;
-            break;
-          case 14: 
-            bright_interval = 150;
-            break;
-          case 15: 
-            bright_interval = 175;
-            break;
-        }
-      }else{
-        bright_interval = 100;
+
+      if ( bright_led == 15 ) {
+        bright_interval = 500;
+      } else {
+        bright_interval = 75;
       }
     }
     else
     {
+      trailing_led = bright_led;
       bright_led--;
-      if( bright_led < 6 ){
-        switch ( bright_led )
-        {
-          case 5: 
-            bright_interval = 125;
-            break;
-          case 4: 
-            bright_interval = 150;
-            break;
-          case 3: 
-            bright_interval = 175;
-            break;
-        }
-      }else{
-        bright_interval = 100;
+      if ( bright_led == 4 ) {
+        bright_interval = 500;
+      } else {
+        bright_interval = 75;
       }
     }
     prevBrightMillis = millis();
   }
-  
+
   powerStick.setPixelColor(bright_led, powerStick.Color(255, 0, 0));
-  powerStick.show();
 
   if ( bright_led == 15 )
   {
     reverse = true;
   }
-  if ( bright_led == 3 )
+  else if ( bright_led == 4 )
   {
     reverse = false;
+  } 
+  else 
+  {
+    powerStick.setPixelColor(trailing_led, powerStick.Color(128, 0, 0));
   }
+  powerStick.show();
 
   /* END POWERCELL ANIMATION */
 
