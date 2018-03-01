@@ -82,10 +82,42 @@ void loop() {
     if ( reverse == false )
     {
       bright_led++;
+      if( bright_led > 12 ){
+        switch ( bright_led )
+        {
+          case 13: 
+            bright_interval = 125;
+            break;
+          case 14: 
+            bright_interval = 150;
+            break;
+          case 15: 
+            bright_interval = 175;
+            break;
+        }
+      }else{
+        bright_interval = 100;
+      }
     }
     else
     {
       bright_led--;
+      if( bright_led < 6 ){
+        switch ( bright_led )
+        {
+          case 5: 
+            bright_interval = 125;
+            break;
+          case 4: 
+            bright_interval = 150;
+            break;
+          case 3: 
+            bright_interval = 175;
+            break;
+        }
+      }else{
+        bright_interval = 100;
+      }
     }
     prevBrightMillis = millis();
   }
@@ -101,6 +133,7 @@ void loop() {
   {
     reverse = false;
   }
+
   /* END POWERCELL ANIMATION */
 
   delay(50);
