@@ -7,7 +7,7 @@ Adafruit_NeoPixel eyeStick = Adafruit_NeoPixel(3, NEO_EYES, NEO_GRB + NEO_KHZ800
 #define NEO_POWER 3 // for cyclotron
 Adafruit_NeoPixel powerStick = Adafruit_NeoPixel(16, NEO_POWER, NEO_GRB + NEO_KHZ800);
 
-void setup() {
+void setup() { 
   // configure neopixels
   eyeStick.begin();
   eyeStick.setBrightness(80);
@@ -18,19 +18,20 @@ void setup() {
   powerStick.show(); // Initialize all pixels to 'off'
 }
 
-const int bright_interval = 100;
+unsigned long bright_interval = 100;
 unsigned long prevBrightMillis = 0;
 int bright_led = 3;
 bool reverse = true;
 
-const int swap_interval = 60000;
+unsigned long swap_interval = 20000;
 unsigned long prevSwapMillis = 0;
 int swap_level = 1;
 bool firstRun = true;
 
 void loop() {
-  int currentMillis = millis();
+  unsigned long currentMillis = millis();
 
+  /* TURN ON THE EYES */
   if ( firstRun )
   {
     eyeStick.setPixelColor(1, eyeStick.Color(0, 63, 128));
@@ -39,10 +40,9 @@ void loop() {
     firstRun = false;
   }
 
-  if (currentMillis - prevSwapMillis > swap_interval)
-  {
-    prevSwapMillis = currentMillis;
-
+  /* CHANGE HOLO LIGHT EVERY X SECONDS */
+  if ((unsigned long)(currentMillis - prevSwapMillis) >= swap_interval)
+  {    
     switch ( swap_level )
     {
       case 1: // set all leds to white
@@ -66,16 +66,19 @@ void loop() {
         break;
     }
     eyeStick.show();
-  }
 
+    prevSwapMillis = millis();
+  }
+  /* END HOLO LIGHT */
+
+  /* POWERCELL ANIMATION */
   for (int i = 3; i < 16; i++)
   {
     powerStick.setPixelColor(i, powerStick.Color(15, 0, 0));
   }
 
-  if (currentMillis - prevBrightMillis > bright_interval)
+  if ((unsigned long)(currentMillis - prevBrightMillis) >= bright_interval)
   {
-    prevBrightMillis = currentMillis;
     if ( reverse == false )
     {
       bright_led++;
@@ -84,7 +87,9 @@ void loop() {
     {
       bright_led--;
     }
+    prevBrightMillis = millis();
   }
+  
   powerStick.setPixelColor(bright_led, powerStick.Color(255, 0, 0));
   powerStick.show();
 
@@ -96,6 +101,7 @@ void loop() {
   {
     reverse = false;
   }
+  /* END POWERCELL ANIMATION */
 
-  delay(10);
+  delay(50);
 }
