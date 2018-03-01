@@ -23,7 +23,7 @@ unsigned long prevBrightMillis = 0;
 int bright_led = 3;
 bool reverse = true;
 
-unsigned long swap_interval = 20000;
+unsigned long swap_interval = 60000;
 unsigned long prevSwapMillis = 0;
 int swap_level = 1;
 bool firstRun = true;
