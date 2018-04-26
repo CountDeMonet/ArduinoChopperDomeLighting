@@ -18,13 +18,13 @@ void setup() {
   powerStick.show(); // Initialize all pixels to 'off'
 }
 
-unsigned long bright_interval = 75;
+unsigned long bright_interval = 70;
 unsigned long prevBrightMillis = 0;
 int bright_led = 4;
 int trailing_led = 4;
 bool reverse = true;
 
-unsigned long swap_interval = 60000;
+unsigned long swap_interval = 300000;
 unsigned long prevSwapMillis = 0;
 int swap_level = 1;
 bool firstRun = true;
@@ -48,21 +48,13 @@ void loop() {
     {
       case 1: // set all leds to white
         eyeStick.setPixelColor(0, eyeStick.Color(255, 255, 255));
+		swap_interval = 60000; // 1 minute
         swap_level = 2;
         break;
 
-      case 2: // set all leds to red
-        eyeStick.setPixelColor(0, eyeStick.Color(255, 0, 0));
-        swap_level = 3;
-        break;
-
-      case 3: // set all leds to blue
-        eyeStick.setPixelColor(0, eyeStick.Color(0, 0, 255));
-        swap_level = 4;
-        break;
-
-      case 4: // off
+      case 2: // off
         eyeStick.setPixelColor(0, 0);
+		swap_interval = 300000; // 5 minutes
         swap_level = 1;
         break;
     }
