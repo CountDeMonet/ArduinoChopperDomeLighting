@@ -4,5 +4,7 @@ This is a simple dome lighting scheme for a Star Wars Rebels Chopper build. Chop
 
 This setup uses and arduino nano, 3 individual neopixels, and 2 neopixel sticks. Only 13 of the 16 LED's are actually used on the sticks as that is all the is visible in the area.
 
+![wiring](https://raw.githubusercontent.com/CountDeMonet/ArduinoChopperDomeLighting/master/dome.png)
+
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/UJEhk5InXJc/0.jpg)](https://www.youtube.com/watch?v=UJEhk5InXJc "Arduino Dome Rotation Controller")
 
